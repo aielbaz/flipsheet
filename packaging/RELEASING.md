@@ -8,7 +8,7 @@ Releases are automated with [release-please](https://github.com/googleapis/relea
    changelog, and the version bumps in `pyproject.toml`, `src/flipsheet/__init__.py` and
    `packaging/flipsheet.spec`.
 3. Merge the release PR. That creates the `vX.Y.Z` tag and the GitHub release, then the
-   workflow builds the RPM on Fedora 43 and 44 and attaches the packages to the release.
+   workflow builds the RPM on Fedora 44 and attaches the packages to the release.
 
 ## If the RPM build fails after the release was created
 
