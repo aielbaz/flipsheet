@@ -11,11 +11,12 @@ sheet (booklet style, with right-to-left reading order for Arabic books).
 
 ## Install (Fedora)
 
-```
-sudo dnf install ./flipsheet-0.1.0-1.*.noarch.rpm
-```
+Download the latest `.rpm` for your Fedora version from the
+[Releases page](../../releases/latest), then:
 
-Build the package yourself with `packaging/build-rpm.sh` (see below).
+```
+sudo dnf install ./flipsheet-*.rpm
+```
 
 ## Run from a checkout
 
@@ -35,15 +36,6 @@ uv run flipsheet [file.pdf]
 ```
 flipsheet-impose IN.pdf OUT.pdf --range 64-90 --per-side 2 --dir rtl --paper a4 --margin 7 --scale fit
 ```
-
-## Build the RPM
-
-```
-sudo dnf install rpm-build pyproject-rpm-macros python3-devel desktop-file-utils
-packaging/build-rpm.sh
-```
-
-The package lands in `~/rpmbuild/RPMS/noarch/`.
 
 ## License
 
