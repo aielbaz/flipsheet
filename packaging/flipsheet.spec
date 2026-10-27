@@ -1,5 +1,7 @@
 Name:           flipsheet
+# x-release-please-start-version
 Version:        0.1.0
+# x-release-please-end
 Release:        1%{?dist}
 Summary:        Manual duplex printing and booklet layout for single-sided printers
 License:        AGPL-3.0-or-later

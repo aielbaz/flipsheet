@@ -1,12 +1,26 @@
 # Releasing
 
-1. Set the new version in `pyproject.toml`, `packaging/flipsheet.spec` (`Version:`) and
-   `src/flipsheet/__init__.py`.
-2. Commit, then tag and push: `git tag v0.2.0 && git push origin v0.2.0`.
+Releases are automated with [release-please](https://github.com/googleapis/release-please).
 
-The GitHub workflow (`.github/workflows/release.yml`) builds the RPM on Fedora 43 and 44 and
-attaches the packages to a new GitHub release. It also builds on every merged pull request,
-without releasing anything; the packages are kept as workflow artifacts.
+1. Merge pull requests into `main` using conventional commit messages (`feat: ...`,
+   `fix: ...`, `docs: ...`, and so on). When squash-merging, the PR title is the message.
+2. release-please keeps a "release PR" open on `main`. It contains the next version, the
+   changelog, and the version bumps in `pyproject.toml`, `src/flipsheet/__init__.py` and
+   `packaging/flipsheet.spec`.
+3. Merge the release PR. That creates the `vX.Y.Z` tag and the GitHub release, then the
+   workflow builds the RPM on Fedora 43 and 44 and attaches the packages to the release.
+
+## One-time repository setup
+
+In the repository settings, under Actions → General → Workflow permissions, turn on
+"Allow GitHub Actions to create and approve pull requests". release-please needs it to open
+the release PR.
+
+## Version numbers
+
+The version lives in three files, and release-please updates all of them. The marker comments
+(`x-release-please-*`) tell it where. Don't remove them. `packaging/build-rpm.sh` refuses to
+build if `pyproject.toml` and the spec disagree.
 
 ## Building the RPM locally
 
