@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Flipsheet
+GenericName=PDF Printing
+Comment=Print PDFs on both sides, even on single-sided printers
+Exec=flipsheet %f
+Icon=flipsheet
+Terminal=false
+Categories=Office;Qt;
+MimeType=application/pdf;
+Keywords=print;duplex;pdf;booklet;

@@ -1,23 +1,41 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "duplex-print"
+name = "flipsheet"
 version = "0.1.0"
 description = "Manual duplex printing helper with N-up imposition for simple printers"
+readme = "README.md"
 requires-python = ">=3.10"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
+classifiers = [
+    "Environment :: X11 Applications :: Qt",
+    "Topic :: Printing",
+]
+# PySide6 is deliberately not listed: it comes from the distro (python3-pyside6) so it matches
+# the desktop's Qt and picks up the native theme. pymupdf stays below 2.0, which would also
+# import its heavy layout/onnx stack at start-up.
 dependencies = [
-    "pymupdf>=1.28.2",
+    "pymupdf>=1.28.2,<2",
 ]
 
-[tool.uv]
-# pygobject-stubs pulls in pygobject, which needs system headers to build; the real
-# gi comes from the system Python at runtime, so only install the type stubs.
-override-dependencies = ["pygobject; sys_platform == 'never'"]
+[project.scripts]
+flipsheet-impose = "flipsheet.impose:main"
 
-[dependency-groups]
-dev = [
-    "pygobject-stubs>=2.20.0",
-]
+[project.gui-scripts]
+flipsheet = "flipsheet.gui:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+flipsheet = ["flipsheet.svg"]
 
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
 reportMissingModuleSource = false
+# PySide6 comes from the distro (python3-pyside6) so it matches the desktop's Qt and theme
+extraPaths = ["/usr/lib/python3.14/site-packages", "/usr/lib64/python3.14/site-packages"]
