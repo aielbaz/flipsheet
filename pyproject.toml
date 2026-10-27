@@ -1,0 +1,23 @@
+[project]
+name = "duplex-print"
+version = "0.1.0"
+description = "Manual duplex printing helper with N-up imposition for simple printers"
+requires-python = ">=3.10"
+dependencies = [
+    "pymupdf>=1.28.2",
+]
+
+[tool.uv]
+# pygobject-stubs pulls in pygobject, which needs system headers to build; the real
+# gi comes from the system Python at runtime, so only install the type stubs.
+override-dependencies = ["pygobject; sys_platform == 'never'"]
+
+[dependency-groups]
+dev = [
+    "pygobject-stubs>=2.20.0",
+]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+reportMissingModuleSource = false
