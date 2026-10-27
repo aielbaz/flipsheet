@@ -3,6 +3,11 @@ name: Release
 on:
   push:
     branches: [main]
+  workflow_dispatch:      # build and attach RPMs to an existing release: gh workflow run release.yml -f tag=flipsheet-v1.0.0
+    inputs:
+      tag:
+        description: Existing release tag to build the RPMs for
+        required: true
 
 permissions:
   contents: write
@@ -21,7 +26,7 @@ jobs:
   rpm:
     name: RPM (Fedora ${{ matrix.fedora }})
     needs: release-please
-    if: needs.release-please.outputs.release_created == 'true'
+    if: needs.release-please.outputs.release_created == 'true' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     container: fedora:${{ matrix.fedora }}
     strategy:
@@ -31,12 +36,12 @@ jobs:
     steps:
       - name: Install build dependencies
         run: |
-          dnf install -y rpm-build pyproject-rpm-macros python3-devel desktop-file-utils \
-            python3-PyMuPDF python3-pyside6 git tar gzip
+          dnf install -y rpm-build pyproject-rpm-macros python3-devel python3-setuptools \
+            desktop-file-utils python3-PyMuPDF python3-pyside6 git tar gzip
 
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.release-please.outputs.tag_name }}
+          ref: ${{ needs.release-please.outputs.tag_name || inputs.tag }}
 
       - name: Build the RPM
         run: packaging/build-rpm.sh
@@ -65,4 +70,4 @@ jobs:
       - name: Upload to the release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${{ needs.release-please.outputs.tag_name }}" dist/*.rpm --repo "${{ github.repository }}"
+        run: gh release upload "${{ needs.release-please.outputs.tag_name || inputs.tag }}" dist/*.rpm --clobber --repo "${{ github.repository }}"

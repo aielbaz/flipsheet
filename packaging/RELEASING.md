@@ -10,6 +10,15 @@ Releases are automated with [release-please](https://github.com/googleapis/relea
 3. Merge the release PR. That creates the `vX.Y.Z` tag and the GitHub release, then the
    workflow builds the RPM on Fedora 43 and 44 and attaches the packages to the release.
 
+## If the RPM build fails after the release was created
+
+The release and tag already exist, but have no RPMs. Fix the workflow, push, then build the
+packages for that tag by hand:
+
+```
+gh workflow run release.yml -f tag=flipsheet-v1.0.0
+```
+
 ## One-time repository setup
 
 In the repository settings, under Actions → General → Workflow permissions, turn on
@@ -25,8 +34,8 @@ build if `pyproject.toml` and the spec disagree.
 ## Building the RPM locally
 
 ```
-sudo dnf install rpm-build pyproject-rpm-macros python3-devel desktop-file-utils \
-                 python3-PyMuPDF python3-pyside6
+sudo dnf install rpm-build pyproject-rpm-macros python3-devel python3-setuptools \
+                 desktop-file-utils python3-PyMuPDF python3-pyside6
 packaging/build-rpm.sh
 ```
 
